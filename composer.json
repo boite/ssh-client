@@ -1,0 +1,17 @@
+{
+    "name": "ssh-client/ssh-client",
+    "description": "Invoke OpenSSH from PHP.",
+    "license": "MIT",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "SSHClient\\": "lib/SSHClient"
+        }
+    },
+    "require": {
+        "symfony/process": "^3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.8"
+    }
+}
