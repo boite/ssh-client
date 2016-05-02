@@ -22,7 +22,10 @@ Invoke OpenSSH from PHP.
 
     $config->setSCPOptions(array('r'));
     $scp_client = $builder->buildSecureCopyClient();
-    $scp_client->copy('path/to/somedir', 'boite@myhost.example.com:~/');
+    $scp_client->copy(
+        'path/to/somedir',
+        $scp_client->getRemotePath('~/')
+    );
 
     # build an SSH client and run a command on the target host
 
