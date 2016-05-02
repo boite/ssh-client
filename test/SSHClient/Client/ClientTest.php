@@ -31,7 +31,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->builder = $this
             ->getMockBuilder(ClientBuilder::class)
             ->setConstructorArgs(array($this->config))
-            ->setMethods(array('setArguments', 'getProcess'))
+            ->setMethods(array('setArguments', 'getProcess', 'getRemotePathPrefix'))
             ->getMock()
         ;
     }
@@ -87,6 +87,23 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         ;
 
         $this->builder->buildSecureCopyClient()->copy($fromPath, $toPath);
+    }
+
+    public function testGetRemotePath()
+    {
+        $path = 'path';
+
+        $this
+            ->builder
+            ->expects($this->once())
+            ->method('getRemotePathPrefix')
+            ->willReturn('some_prefix:')
+        ;
+
+        $this->assertEquals(
+            'some_prefix:path',
+            $this->builder->buildSecureCopyClient()->getRemotePath($path)
+        );
     }
 
     public function testGetOutput()

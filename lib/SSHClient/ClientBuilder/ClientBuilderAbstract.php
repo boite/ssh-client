@@ -117,6 +117,16 @@ abstract class ClientBuilderAbstract implements ClientBuilderInterface
         return $this->getProcessBuilder()->getProcess();
     }
 
+    public function getRemotePathPrefix()
+    {
+        $prefix = '';
+        if ($this->config->getUsername()) {
+            $prefix .= $this->config->getUsername() . '@';
+        }
+        $prefix .= $this->config->getHostname() . ':';
+        return $prefix;
+    }
+
     private function buildOptions($options)
     {
         $opts = array();

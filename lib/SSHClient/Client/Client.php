@@ -58,4 +58,9 @@ class Client implements ClientInterface
     {
         return $this->process ? $this->process->getExitCode() : null;
     }
+
+    public function getRemotePath($path)
+    {
+        return $this->builder->getRemotePathPrefix() . $path;
+    }
 }

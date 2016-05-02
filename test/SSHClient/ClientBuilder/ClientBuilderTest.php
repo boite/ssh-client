@@ -191,6 +191,54 @@ class ClientBuilderTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testGetRemotePathPrefixContainsUsernameIfAvailable()
+    {
+        $this
+            ->config
+            ->expects($this->once())
+            ->method('getHostname')
+            ->willReturn('rhost')
+        ;
+        $this
+            ->config
+            ->expects($this->exactly(2))
+            ->method('getUsername')
+            ->willReturn('ruser')
+        ;
+
+        $builder = new ClientBuilder($this->config);
+
+        $this->assertEquals(
+            'ruser@rhost:',
+            $builder->getRemotePathPrefix(),
+            'getRemotePathPrefix constructs a remote file system path prefix like "user@host:".'
+        );
+    }
+
+    public function testGetRemotePathPrefixOmitsUsernameIfUnavailable()
+    {
+        $this
+            ->config
+            ->expects($this->once())
+            ->method('getHostname')
+            ->willReturn('rhost')
+        ;
+        $this
+            ->config
+            ->expects($this->once())
+            ->method('getUsername')
+            ->willReturn(null)
+        ;
+
+        $builder = new ClientBuilder($this->config);
+
+        $this->assertEquals(
+            'rhost:',
+            $builder->getRemotePathPrefix(),
+            'getRemotePathPrefix constructs a remote file system path prefix like "host:".'
+        );
+    }
+
     public function testSetArguments()
     {
         $this

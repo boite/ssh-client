@@ -49,4 +49,15 @@ interface ClientInterface
      * @return integer
      */
     public function getExitCode();
+
+    /**
+     * Get the path to a remote file system resource.
+     *
+     * @api
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    public function getRemotePath($path);
 }
