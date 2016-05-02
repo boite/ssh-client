@@ -28,18 +28,17 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->config = new ClientConfiguration(
             'some_hostname', 'some_username'
         );
-        $this->builder = $this->getMock(
-            ClientBuilder::class,
-            array('getProcess', 'setArguments'),
-            array($this->config)
-        );
+        $this->builder = $this
+            ->getMockBuilder(ClientBuilder::class)
+            ->setConstructorArgs(array($this->config))
+            ->setMethods(array('setArguments', 'getProcess'))
+            ->getMock()
+        ;
     }
 
     public function testExec()
     {
         $commandArgs = array('ls', '-ahl');
-
-        $client = $this->builder->buildClient();
 
         $this
             ->builder
@@ -60,15 +59,13 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->method('run')
         ;
 
-        $client->exec($commandArgs);
+        $this->builder->buildClient()->exec($commandArgs);
     }
 
     public function testCopy()
     {
         $fromPath = 'from_path';
         $toPath = 'to_path';
-
-        $client = $this->builder->buildSecureCopyClient();
 
         $this
             ->builder
@@ -89,14 +86,12 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->method('run')
         ;
 
-        $client->copy($fromPath, $toPath);
+        $this->builder->buildSecureCopyClient()->copy($fromPath, $toPath);
     }
 
     public function testGetOutput()
     {
         $commandArgs = array('ls', '-ahl');
-
-        $client = $this->builder->buildClient();
 
         $this
             ->builder
@@ -116,14 +111,15 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('hi'))
         ;
 
-        $this->assertEquals('hi', $client->exec($commandArgs)->getOutput());
+        $this->assertEquals(
+            'hi',
+            $this->builder->buildClient()->exec($commandArgs)->getOutput()
+        );
     }
 
     public function testGetErrorOutput()
     {
         $commandArgs = array('ls', '-ahl');
-
-        $client = $this->builder->buildClient();
 
         $this
             ->builder
@@ -144,15 +140,14 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         ;
 
         $this->assertEquals(
-            'error', $client->exec($commandArgs)->getErrorOutput()
+            'error',
+            $this->builder->buildClient()->exec($commandArgs)->getErrorOutput()
         );
     }
 
     public function testGetExitCode()
     {
         $commandArgs = array('ls', '-ahl');
-
-        $client = $this->builder->buildClient();
 
         $this
             ->builder
@@ -173,7 +168,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         ;
 
         $this->assertEquals(
-            0, $client->exec($commandArgs)->getExitCode()
+            0, $this->builder->buildClient()->exec($commandArgs)->getExitCode()
         );
     }
 }
