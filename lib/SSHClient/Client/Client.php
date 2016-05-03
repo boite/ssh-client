@@ -22,25 +22,50 @@ class Client implements ClientInterface
         $this->builder = $builder;
     }
 
-    public function exec(array $commandArguments, $callback = null)
-    {
+    public function exec(
+        array $commandArguments,
+        $callback = null,
+        $timeout = null,
+        $disableTimeout = false
+    ) {
         $this->process = $this
             ->builder
             ->setArguments($commandArguments)
             ->getProcess()
         ;
+
+        if ($disableTimeout) {
+            $this->process->setTimeout(null);
+        } else if ($timeout) {
+            $this->process->setTimeout($timeout);
+        }
+
         $this->process->run($callback);
+
         return $this;
     }
 
-    public function copy($fromPath, $toPath, $callback = null)
-    {
+    public function copy(
+        $fromPath,
+        $toPath,
+        $callback = null,
+        $timeout = null,
+        $disableTimeout = false
+    ) {
         $this->process = $this
             ->builder
             ->setArguments(array($fromPath, $toPath))
             ->getProcess()
         ;
+
+        if ($disableTimeout) {
+            $this->process->setTimeout(null);
+        } else if ($timeout) {
+            $this->process->setTimeout($timeout);
+        }
+
         $this->process->run($callback);
+
         return $this;
     }
 
