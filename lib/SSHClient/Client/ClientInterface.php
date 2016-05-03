@@ -13,10 +13,17 @@ interface ClientInterface
      *
      * @param array $commandArguments
      * @param null|callable $callback
+     * @param integer $timeout in seconds
+     * @param bool $disableTimeout
      *
      * @return \SSHClient\Client\ClientInterface
      */
-    public function exec(array $commandArguments, $callback = null);
+    public function exec(
+        array $commandArguments,
+        $callback = null,
+        $timeout = null,
+        $disableTimeout = false
+    );
 
     /**
      * @api
@@ -24,10 +31,18 @@ interface ClientInterface
      * @param string $fromPath
      * @param string $toPath
      * @param null|callable $callback
+     * @param integer $timeout in seconds
+     * @param bool $disableTimeout
      *
      * @return \SSHClient\Client\ClientInterface
      */
-    public function copy($fromPath, $toPath, $callback = null);
+    public function copy(
+        $fromPath,
+        $toPath,
+        $callback = null,
+        $timeout = null,
+        $disableTimeout = false
+    );
 
     /**
      * @api
